@@ -1,0 +1,6 @@
+{
+    "board": "arduino:renesas_uno:minima",
+    "programmer": "cmsis-dap",
+    "port": "/dev/tty.Bluetooth-Incoming-Port",
+    "sketch": "organic_tears_drops.ino"
+}
