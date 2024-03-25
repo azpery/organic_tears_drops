@@ -12,6 +12,7 @@ class ScenarioStart: public Scenario
     
     private:
         int _index = 0;
+        bool fadeUpAndDown(int index);
     
 };
 #endif

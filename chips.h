@@ -19,9 +19,11 @@ class Chips
         int getNumOfLeds();
         int getPin();
         bool fadeUp( int speed);
-        bool fadeUpAndDown(CRGB color, int speed);
+        bool fadeUpAndDown(CRGB color, int speed, int maxBrightness = 255);
+        bool fadeDown(int speed);
         void addToHsv();
         void createHsv(int hue);
+        void setMaxBrightnessRatio(float maxBrightnessRatio);
 
 
     private:
@@ -29,6 +31,8 @@ class Chips
         struct CRGB * _leds;
         int _index;
         int _brightness;
+        int _realBrightness;
+        float _maxBrightnessRatio;
         bool _direction;
         bool _rainbowDirection;
         bool _waveDirection;
@@ -38,5 +42,6 @@ class Chips
         int _pin;
         void runForward();
         void runBackward();
+        void addToBrightness(int delta);
 };
 #endif

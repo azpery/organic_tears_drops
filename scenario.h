@@ -11,6 +11,9 @@ class Scenario
         bool loop();
         void setSpeed(int speed);
         void setAmountOfLoops(int amountOfLoops);
+        bool fadeDown();
+        bool fadeUp();
+        void setMode(int mode);
 
 
     protected:
@@ -25,6 +28,7 @@ class Scenario
         int _amountOfLoop = 10;
         int _loopCounter = 0;
         int _mode = 0;
+        float _maxBrightnessRatio = 0;
         
 };
 #endif

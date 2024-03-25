@@ -52,7 +52,10 @@ ScenarioWave scenarioWave(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
 
 ScenarioStart scenarioStart(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
 
-ScenarioWaveColors scenarioWaveColors(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
+ScenarioWaveColors scenarioWaveColors0(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
+ScenarioWaveColors scenarioWaveColors1(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
+ScenarioWaveColors scenarioWaveColors2(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
+ScenarioWaveColors scenarioWaveColors3(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
 
 // Scenario scenarioBase;
 
@@ -60,9 +63,6 @@ int iteration = 0;
 
 void setup()
 {
-  // for(int i = 0; i < AMOUNT_OF_CHIPS; i++){
-  //   chips[i].setBrightness(255);
-  // }
   FastLED.addLeds<NEOPIXEL, 0>(leds1D, chips1D.getNumOfLeds()); // GRB ordering is assumed
   chips1D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 1>(leds2D, chips2D.getNumOfLeds()); // GRB ordering is assumed
@@ -97,10 +97,17 @@ void setup()
 scenarioRainbow.setup();
 scenarioWave.setup();
 scenarioStart.setup();
-scenarioWaveColors.setup();
+scenarioWaveColors0.setMode(0);
+scenarioWaveColors0.setup();
+scenarioWaveColors1.setMode(1);
+scenarioWaveColors1.setup();
+scenarioWaveColors2.setMode(2);
+scenarioWaveColors2.setup();
+scenarioWaveColors3.setMode(3);
+scenarioWaveColors3.setup();
 }
 
-int counter = 0;
+int counter = 1;
 
 void loop()
 {
@@ -121,16 +128,26 @@ void loop()
   }
 
   if(counter == 2){
-    end = scenarioWaveColors.loop();
+    end = scenarioWaveColors1.loop();
   }
   if(counter == 3){
-    end = scenarioRainbow.loop();
+    end = scenarioWaveColors2.loop();
+  }
+  if(counter == 4){
+    end = scenarioWaveColors3.loop();
+  }
+  if(counter == 5){
+    end = scenarioWaveColors0.loop();
   } 
+  if(counter == 6){
+    end = scenarioRainbow.loop();
+  }
   if(end){
-    counter++;
-    if(counter > 3){
-      counter = 0;
-    }
+    counter = random(0, 7);
+    // counter++;
+    // if(counter > 5){
+    //   counter = 0;
+    // }
   }
 
   FastLED.show();

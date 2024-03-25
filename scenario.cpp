@@ -35,6 +35,7 @@ Scenario::Scenario(Chips chips[], Chips chipsG[], Chips chipsD[],  int amountOfC
 
 bool Scenario::loop()
 {
+    fadeUp();
     if(run()){
         _loopCounter++;
     }
@@ -43,7 +44,7 @@ bool Scenario::loop()
     if(_index > 2147483640){
         _index = 0;
     }
-    if(_loopCounter >= _amountOfLoop){
+    if(_loopCounter >= _amountOfLoop && fadeDown()){
         _loopCounter = 0;
         return true;
     }
@@ -73,4 +74,42 @@ void Scenario::setSpeed(int speed)
 void Scenario::setAmountOfLoops(int amountOfLoops)
 {
     _amountOfLoop = amountOfLoops;
+}
+
+bool Scenario::fadeDown()
+{
+    for(int i = 0; i < _amountOfChips; i++){
+        _chipsG[i].setMaxBrightnessRatio(_maxBrightnessRatio);
+        _chipsD[i].setMaxBrightnessRatio(_maxBrightnessRatio);
+        _chips[i].setMaxBrightnessRatio(_maxBrightnessRatio);
+        _chips[i + _amountOfChips].setMaxBrightnessRatio(_maxBrightnessRatio);
+    }
+    _maxBrightnessRatio -= 0.04;
+    if(_maxBrightnessRatio <= 0){
+        _maxBrightnessRatio = 0;
+        return true;
+    }
+    return false;
+}
+
+bool Scenario::fadeUp()
+{
+    for(int i = 0; i < _amountOfChips; i++){
+        _chipsG[i].setMaxBrightnessRatio(_maxBrightnessRatio);
+        _chipsD[i].setMaxBrightnessRatio(_maxBrightnessRatio);
+        _chips[i].setMaxBrightnessRatio(_maxBrightnessRatio);
+        _chips[i + _amountOfChips].setMaxBrightnessRatio(_maxBrightnessRatio);
+    }
+   
+    _maxBrightnessRatio += 0.02;
+    if(_maxBrightnessRatio >= 1){
+        _maxBrightnessRatio = 1;
+        return true;
+    }
+    return false;
+}
+
+void Scenario::setMode(int mode)
+{
+    _mode = mode;
 }

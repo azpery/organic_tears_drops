@@ -19,8 +19,8 @@ bool ScenarioRainbow::run()
 void ScenarioRainbow::setup()
 {
     setSpeed(100);
-    // for(int i = 0; i < _amountOfChips; i++){
-    //     _chipsG[i].setBrightness(10+i*40);
-    //     _chipsD[i].setBrightness(10+i*40);
-    // }
+    for(int i = 0; i < _amountOfChips; i++){
+        _chipsG[i].setBrightness(255);
+        _chipsD[i].setBrightness(255);
+    }
 }

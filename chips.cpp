@@ -10,12 +10,14 @@ Chips::Chips(int num_of_leds, struct CRGB * leds, bool direction, int pin)
     _index = 0;
     _direction = direction;
     _rainbowDirection = true;
-    _brightness = 0;
+    _brightness = 255;
     _waveDirection = false;
     _color = CRGB::Blue;
     _colorDirection = true;
     _pin = pin;
     const int PIN = _pin;
+    _maxBrightnessRatio = 0;
+    _realBrightness = 0;
 }
 
 Chips::Chips()
@@ -29,7 +31,20 @@ Chips::Chips()
     _color = CRGB::Blue;
     _colorDirection = true;
     _pin = 0;
+    _maxBrightnessRatio = 0;
+     _realBrightness = 0;
+     _brightness = 255;
     
+}
+
+void Chips::setMaxBrightnessRatio(float maxBrightnessRatio){
+    if(maxBrightnessRatio < 0){
+        _maxBrightnessRatio = 0;
+    }else if(maxBrightnessRatio > 1){
+        _maxBrightnessRatio = 1;
+    }else{
+        _maxBrightnessRatio = maxBrightnessRatio;
+    }
 }
 
 struct CRGB * Chips::getLeds(){
@@ -96,11 +111,13 @@ bool Chips::rainbow()
     while(i != _index){
         _leds[i] = hsv;
         hsv.hue += 1;
+        hsv.val = round(255*_maxBrightnessRatio);
         i++;
         if(i >= _num_of_leds){
             i = 0;
         }
     }
+    
 
     if(_direction){
         _index++;
@@ -122,35 +139,35 @@ bool Chips::rainbow()
 }
 
 void Chips::addToHsv(){
-    _hsv.hue++;
+    _hsv.hue += 2;
     fill_solid(_leds, _num_of_leds, _hsv);
 }
 
 void Chips::createHsv(int hue){
     _hsv.hue = hue;
-    _hsv.sat = 128;
+    _hsv.sat = 255;
     _hsv.val = 255;
 }
 
 bool Chips::ondulate(){
 
     for(int i = 0; i < _num_of_leds; i++){
-        _leds[i].maximizeBrightness(_brightness);
+        _leds[i].maximizeBrightness(_realBrightness);
     }
 
     if(_waveDirection){
-        _brightness +=  10;
+        addToBrightness(15);
     }
     if(!_waveDirection){
-        _brightness -= 10;
+        addToBrightness(-15);
     }
     if(_brightness <= 0){
         _brightness = 0;
         _waveDirection = true;
-        return true;
     }else if(_brightness >= 255){
         _brightness = 255;
         _waveDirection = false;
+        return true;
     }
     return false;
 }
@@ -176,9 +193,9 @@ void Chips::setBrightness(int brightness){
 
 void Chips::deltaBrightness(int delta){
     if(_waveDirection){
-        _brightness += delta;
+        addToBrightness(delta);
     }else{
-        _brightness -= delta;
+        addToBrightness(-delta);
     }
     if(_brightness > 255){
         _brightness = 255;
@@ -187,13 +204,17 @@ void Chips::deltaBrightness(int delta){
     }
 }
 
-bool Chips::fadeUpAndDown(CRGB color, int speed){
+bool Chips::fadeUpAndDown(CRGB color, int speed, int maxBrightness){
     fill_solid(_leds, _num_of_leds, color);
     deltaBrightness(speed); 
     for(int i = 0; i < _num_of_leds; i++){
-        _leds[i].maximizeBrightness(_brightness);
+        if(_brightness > maxBrightness){
+            _leds[i].maximizeBrightness(maxBrightness);
+        }else{
+            _leds[i].maximizeBrightness(_realBrightness);
+        }
     }
-    if(_brightness == 255){
+    if(_brightness == 255 || _brightness >= maxBrightness){
         _waveDirection = false;
         
     }
@@ -206,18 +227,43 @@ bool Chips::fadeUpAndDown(CRGB color, int speed){
 }
 
 bool Chips::fadeUp(int speed){
-     _brightness += speed;
+    addToBrightness(speed);
       _waveDirection = true;
    
     if(_brightness > 255){
         _brightness = 255;
     }
     for(int i = 0; i < _num_of_leds; i++){
-        _leds[i].maximizeBrightness(_brightness);
+        _leds[i].maximizeBrightness(_realBrightness);
     }
     if(_brightness == 255){
        return true;
     }
 
     return false;
+}
+
+bool Chips::fadeDown(int speed){
+    addToBrightness(-speed);
+    _waveDirection = false;
+    if(_brightness < 0){
+        _brightness = 0;
+    }
+    for(int i = 0; i < _num_of_leds; i++){
+        _leds[i].maximizeBrightness(_realBrightness);
+    }
+    if(_brightness == 0){
+        return true;
+    }
+    return false;
+}
+
+void Chips::addToBrightness(int delta){
+    _brightness += delta;
+    if(_brightness > 255){
+        _brightness = 255;
+    }else if(_brightness < 0){
+        _brightness = 0;
+    }
+    _realBrightness =  round(_maxBrightnessRatio * _brightness);
 }
