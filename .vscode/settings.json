@@ -1,5 +1,23 @@
 {
     "files.associations": {
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "__bit_reference": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp",
+        "__tree": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "initializer_list": "cpp",
+        "ios": "cpp",
+        "map": "cpp",
+        "regex": "cpp",
+        "set": "cpp",
+        "span": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "chrono": "cpp",
+        "format": "cpp"
     }
 }

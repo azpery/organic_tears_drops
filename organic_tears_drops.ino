@@ -5,8 +5,8 @@
 #include "scenarioWave.h"
 #include "scenarioStart.h"
 #include "scenarioWaveColors.h"
-
-
+#include "scenarioHeartBeat.h"
+#include "scenarioPixel.h"
 
 // Define the array of leds
 #define AMOUNT_OF_CHIPS 7
@@ -57,6 +57,10 @@ ScenarioWaveColors scenarioWaveColors1(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
 ScenarioWaveColors scenarioWaveColors2(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
 ScenarioWaveColors scenarioWaveColors3(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
 
+ScenarioHeartBeat scenarioHeartBeat(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
+
+ScenarioPixel scenarioPixel(chips, chipsG, chipsD, AMOUNT_OF_CHIPS);
+
 // Scenario scenarioBase;
 
 int iteration = 0;
@@ -64,86 +68,82 @@ int iteration = 0;
 void setup()
 {
   FastLED.addLeds<NEOPIXEL, 0>(leds1D, chips1D.getNumOfLeds()); // GRB ordering is assumed
-  chips1D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 1>(leds2D, chips2D.getNumOfLeds()); // GRB ordering is assumed
-  chips2D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 2>(leds3D, chips3D.getNumOfLeds()); // GRB ordering is assumed
-  chips3D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 3>(leds4D, chips4D.getNumOfLeds()); // GRB ordering is assumed
-  chips4D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 4>(leds5D, chips5D.getNumOfLeds()); // GRB ordering is assumed
-  chips5D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 5>(leds6D, chips6D.getNumOfLeds()); // GRB ordering is assumed
-  chips6D.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 6>(leds7D, chips7D.getNumOfLeds()); // GRB ordering is assumed
-  chips7D.setColor(CRGB::Blue);
-
 
   FastLED.addLeds<NEOPIXEL, 7>(leds1G, chips1G.getNumOfLeds()); // GRB ordering is assumed
-  chips1G.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 8>(leds2G, chips2G.getNumOfLeds()); // GRB ordering is assumed
-  chips2G.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 9>(leds3G, chips3G.getNumOfLeds()); // GRB ordering is assumed
-  chips3G.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 10>(leds4G, chips4G.getNumOfLeds()); // GRB ordering is assumed
-  chips4G.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 11>(leds5G, chips5G.getNumOfLeds()); // GRB ordering is assumed
-  chips5G.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 12>(leds6G, chips6G.getNumOfLeds()); // GRB ordering is assumed
-  chips6G.setColor(CRGB::Blue);
   FastLED.addLeds<NEOPIXEL, 13>(leds7G, chips7G.getNumOfLeds()); // GRB ordering is assumed
-  chips7G.setColor(CRGB::Blue);
-  FastLED.show();
-scenarioRainbow.setup();
-scenarioWave.setup();
-scenarioStart.setup();
-scenarioWaveColors0.setMode(0);
-scenarioWaveColors0.setup();
-scenarioWaveColors1.setMode(1);
-scenarioWaveColors1.setup();
-scenarioWaveColors2.setMode(2);
-scenarioWaveColors2.setup();
-scenarioWaveColors3.setMode(3);
-scenarioWaveColors3.setup();
+  // FastLED.show();
+  scenarioRainbow.setup();
+  scenarioWave.setup();
+  scenarioStart.setup();
+  scenarioWaveColors0.setMode(0);
+  scenarioWaveColors0.setup();
+  scenarioWaveColors1.setMode(1);
+  scenarioWaveColors1.setup();
+  scenarioWaveColors2.setMode(2);
+  scenarioWaveColors2.setup();
+  scenarioWaveColors3.setMode(3);
+  scenarioWaveColors3.setup();
+  scenarioHeartBeat.setup();
+  scenarioPixel.setup();
 }
 
-int counter = 1;
+int counter = 6;
 
 void loop()
 {
-  // if(iteration < 1000){
-  //    scenarioWave.run();
-  // }else{
-  //   scenarioWave.run();
-  // }
-  // scenarioRainbowG.run();
-  // scenarioRainbowD.run();
   bool end = false;
-  if(counter == 0){
+  if (counter == 0)
+  {
     end = scenarioStart.loop();
   }
-  
-  if(counter == 1){
+
+  if (counter == 1)
+  {
     end = scenarioWave.loop();
   }
 
-  if(counter == 2){
+  if (counter == 2)
+  {
     end = scenarioWaveColors1.loop();
   }
-  if(counter == 3){
+  if (counter == 3)
+  {
     end = scenarioWaveColors2.loop();
   }
-  if(counter == 4){
+  if (counter == 4)
+  {
     end = scenarioWaveColors3.loop();
   }
-  if(counter == 5){
+  if (counter == 5)
+  {
     end = scenarioWaveColors0.loop();
-  } 
-  if(counter == 6){
+  }
+  if (counter == 6)
+  {
     end = scenarioRainbow.loop();
   }
-  if(end){
-    counter = random(0, 7);
+  if (counter == 7)
+  {
+    end = scenarioHeartBeat.loop();
+  }
+  if (counter == 8)
+  {
+    end = scenarioPixel.loop();
+  }
+  if (end)
+  {
+    counter = random(0, 9);
     // counter++;
     // if(counter > 5){
     //   counter = 0;
@@ -152,8 +152,8 @@ void loop()
 
   FastLED.show();
   iteration++;
-  if(iteration > 2000){
+  if (iteration > 2000)
+  {
     iteration = 0;
   }
 }
-

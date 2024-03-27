@@ -1,6 +1,7 @@
 #ifndef Chips_h
 #define Chips_h
 #include "Arduino.h"
+#include "pixel.h"
 #include <FastLED.h>
 
 class Chips
@@ -20,11 +21,15 @@ class Chips
         int getPin();
         bool fadeUp( int speed);
         bool fadeUpAndDown(CRGB color, int speed, int maxBrightness = 255);
-        bool fadeDown(int speed);
+        bool fadeDown(int speed, int minBrightness = 0);
         void addToHsv();
         void createHsv(int hue);
         void setMaxBrightnessRatio(float maxBrightnessRatio);
-
+        bool goesUp();
+        bool goesDown();
+        void turnOff(Pixel pixel);
+        void turnOn(Pixel pixel);
+        void initRainbow();
 
     private:
         int _num_of_leds;
@@ -42,6 +47,6 @@ class Chips
         int _pin;
         void runForward();
         void runBackward();
-        void addToBrightness(int delta);
+        void addToBrightness(int delta, int maxBrightness = 255, int minBrightness = 0);
 };
 #endif
