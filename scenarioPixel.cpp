@@ -54,6 +54,6 @@ void ScenarioPixel::setup()
     {
         _chipsG[i].setBrightness(255);
         _chipsD[i].setBrightness(255);
-        _chips[i].setColor(CRGB::Black);
+        getChips(i)->setColor(CRGB::Black);
     }
 }

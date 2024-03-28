@@ -8,10 +8,10 @@ bool ScenarioWaveColors::run()
     if (_mode == 2)
     {
 
-        for (int i = 0; i < _amountOfChips * 2; i++)
+        for (int i = 0; i < _amountOfChips * 2 ; i++)
         {
-            _chips[i].addToHsv();
-            if (_chips[i].ondulate() && i == _amountOfChips * 2 - 1)
+            getChips(i)->addToHsv();
+            if (getChips(i)->ondulate() && i == _amountOfChips *2  - 1)
             {
                 // if (_loopCounter == 20)
                 // {
@@ -31,8 +31,8 @@ bool ScenarioWaveColors::run()
     {
         for (int i = 0; i < _amountOfChips * 2; i++)
         {
-            _chips[i].addToHsv();
-            if (_chips[i].ondulate() && i == _amountOfChips * 2 - 1)
+            getChips(i)->addToHsv();
+            if (getChips(i)->ondulate() && i == _amountOfChips * 2 - 1)
             {
 
                 return true;
@@ -73,13 +73,20 @@ bool ScenarioWaveColors::run()
 
 void ScenarioWaveColors::setup()
 {
-    _amountOfLoop = 5;
+    _amountOfLoop = 15;
     setSpeed(100);
     if(_mode == 3){
         for (int j = 0; j < _amountOfChips * 2; j++)
         {
-            _chips[j].setBrightness(10 + ((_amountOfChips * 2 - 1) - j) * 15);
-            _chips[j].createHsv(j * 10);
+            getChips(j)->setBrightness(10 + ((_amountOfChips * 2 - 1) - j) * 15);
+            getChips(j)->createHsv(j * 10);
+        }
+    }else if(_mode == 2){
+        for (int i = 0; i < _amountOfChips * 2; i++)
+        {
+            getChips(i)->setBrightness(10 + i * 15);
+            // getChips(i)->setBrightness(10 + ((_amountOfChips*2-1) - i) * 15);
+            getChips(i)->createHsv(i * 10);
         }
     }else{
         for (int i = 0; i < _amountOfChips; i++)
@@ -89,11 +96,6 @@ void ScenarioWaveColors::setup()
             _chipsG[i].createHsv(i * 10);
             _chipsD[i].createHsv(i * 10);
         }
-        for (int i = 0; i < _amountOfChips * 2; i++)
-        {
-            _chips[i].setBrightness(10 + i * 15);
-            // _chips[i].setBrightness(10 + ((_amountOfChips*2-1) - i) * 15);
-            _chips[i].createHsv(i * 10);
-        }
+        
     }
 }

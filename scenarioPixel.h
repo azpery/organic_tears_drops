@@ -14,7 +14,7 @@ class ScenarioPixel: public Scenario
     
     private:
         int _amountOfPixels = 1;
-        Pixel _pixels[20];
+        Pixel _pixels[30];
         int _i = 0;
     
 };

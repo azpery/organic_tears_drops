@@ -30,9 +30,13 @@ class Chips
         void turnOff(Pixel pixel);
         void turnOn(Pixel pixel);
         void initRainbow();
+        void randomOnOff();
+        void doubleRainbow(long react);
+        CRGB scroll(int pos); 
 
     private:
         int _num_of_leds;
+        int _midway;
         struct CRGB * _leds;
         int _index;
         int _brightness;
@@ -48,5 +52,6 @@ class Chips
         void runForward();
         void runBackward();
         void addToBrightness(int delta, int maxBrightness = 255, int minBrightness = 0);
+        long post_react = 0;
 };
 #endif

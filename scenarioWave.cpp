@@ -10,8 +10,6 @@ bool ScenarioWave::run()
     for(int i = 0; i < _amountOfChips; i++){
         _chipsG[i].setColor(colors[i]);
         _chipsD[i].setColor(colors[i]);
-        // _chips[i].rainbow();
-        // _chips[i].deltaBrightness(i);
         _chipsG[i].ondulate();
         if(_chipsD[i].ondulate() && i == _amountOfChips-1){
             return true;

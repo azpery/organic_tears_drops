@@ -5,9 +5,9 @@
 
 Scenario::Scenario()
 {
-    for(int i = 0; i < _amountOfChips * 2; i++){
-        _chips[i] = Chips();
-    }
+    // for(int i = 0; i < _amountOfChips * 2; i++){
+    //     getChips(i) = Chips();
+    // }
     for(int i = 0; i < _amountOfChips; i++){
         _chipsG[i] = Chips();
         _chipsD[i] = Chips();
@@ -22,15 +22,33 @@ Scenario::Scenario()
 Scenario::Scenario(Chips chips[], Chips chipsG[], Chips chipsD[],  int amountOfChips)
 {
     _amountOfChips = amountOfChips;
-    for(int i = 0; i < _amountOfChips * 2; i++){
-        _chips[i] = chips[i];
-    }
     for(int i = 0; i < _amountOfChips; i++){
         _chipsG[i] = chipsG[i];
         _chipsD[i] = chipsD[i];
     }
     _speed = 0;
     _index = 0;
+}
+
+Scenario::Scenario(Chips chipsG[], Chips chipsD[],  int amountOfChips)
+{
+     _amountOfChips = amountOfChips;
+    
+    for(int i = 0; i < _amountOfChips; i++){
+        _chipsG[i] = chipsG[i];
+        _chipsD[i] = chipsD[i];
+    }
+    _speed = 0;
+    _index = 0;
+}
+
+Chips * Scenario::getChips(int index)
+{
+    if(index < _amountOfChips){
+        return &_chipsG[_amountOfChips - index - 1];
+    }else{
+        return &_chipsD[index - _amountOfChips];
+    }
 }
 
 bool Scenario::loop()
@@ -46,6 +64,7 @@ bool Scenario::loop()
     }
     if(_loopCounter >= _amountOfLoop && fadeDown()){
         _loopCounter = 0;
+        _end = false;
         return true;
     }
     return false;
@@ -81,8 +100,8 @@ bool Scenario::fadeDown()
     for(int i = 0; i < _amountOfChips; i++){
         _chipsG[i].setMaxBrightnessRatio(_maxBrightnessRatio);
         _chipsD[i].setMaxBrightnessRatio(_maxBrightnessRatio);
-        _chips[i].setMaxBrightnessRatio(_maxBrightnessRatio);
-        _chips[i + _amountOfChips].setMaxBrightnessRatio(_maxBrightnessRatio);
+        getChips(i)->setMaxBrightnessRatio(_maxBrightnessRatio);
+        getChips(i + _amountOfChips)->setMaxBrightnessRatio(_maxBrightnessRatio);
     }
     _maxBrightnessRatio -= 0.04;
     if(_maxBrightnessRatio <= 0){
@@ -97,8 +116,8 @@ bool Scenario::fadeUp()
     for(int i = 0; i < _amountOfChips; i++){
         _chipsG[i].setMaxBrightnessRatio(_maxBrightnessRatio);
         _chipsD[i].setMaxBrightnessRatio(_maxBrightnessRatio);
-        _chips[i].setMaxBrightnessRatio(_maxBrightnessRatio);
-        _chips[i + _amountOfChips].setMaxBrightnessRatio(_maxBrightnessRatio);
+        getChips(i)->setMaxBrightnessRatio(_maxBrightnessRatio);
+        getChips(i + _amountOfChips)->setMaxBrightnessRatio(_maxBrightnessRatio);
     }
    
     _maxBrightnessRatio += 0.02;

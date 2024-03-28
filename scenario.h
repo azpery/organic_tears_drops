@@ -6,6 +6,7 @@ class Scenario
 {
     public:
         Scenario(Chips chips[], Chips chipsG[], Chips chipsD[], int amountOfChips);
+        Scenario( Chips chipsG[], Chips chipsD[], int amountOfChips);
         Scenario();
         void setup();
         bool loop();
@@ -14,12 +15,14 @@ class Scenario
         bool fadeDown();
         bool fadeUp();
         void setMode(int mode);
+        Chips * getChips(int index);
+        bool _end = false;
+
 
 
     protected:
         Chips  _chipsG[7];
         Chips  _chipsD[7];
-        Chips  _chips[14];
         int _amountOfChips;
         int _speed;
         virtual bool run()=0;
